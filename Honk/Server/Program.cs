@@ -1,6 +1,7 @@
 using Honk.Server.Data;
 using Honk.Server.Models;
 using Honk.Server.Models.Data;
+using Honk.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +65,8 @@ builder.Services
             ValidAudience = jwtConfig.Audience
         };
     });
+
+builder.Services.AddTransient<ITokenService, JwtService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
