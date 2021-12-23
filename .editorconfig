@@ -17,6 +17,8 @@ csharp_style_var_for_built_in_types=true:silent
 csharp_style_var_when_type_is_apparent=true:silent
 csharp_style_var_elsewhere=true:silent
 dotnet_diagnostic.CA1707.severity=warning
+guidelines = 120
+guidelines_style = 1px solid 3e3e42
 
 # Xml files
 [*.xml]
