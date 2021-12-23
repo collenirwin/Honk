@@ -4,7 +4,7 @@
 [*]
 indent_style = space
 csharp_using_directive_placement=outside_namespace:suggestion
-csharp_style_namespace_declarations=block_scoped:warning
+csharp_style_namespace_declarations=file_scoped:warning
 csharp_style_expression_bodied_operators=when_on_single_line:silent
 csharp_style_expression_bodied_constructors=when_on_single_line:silent
 csharp_style_expression_bodied_methods=when_on_single_line:silent
