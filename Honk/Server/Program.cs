@@ -33,7 +33,8 @@ builder.Services
 
         options.User = new UserOptions
         {
-            AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+            AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_",
+            RequireUniqueEmail = true
         };
     })
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -91,6 +92,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
