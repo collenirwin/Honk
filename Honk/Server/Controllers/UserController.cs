@@ -2,7 +2,6 @@
 using Honk.Server.Services;
 using Honk.Shared.Models;
 using Honk.Shared.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
