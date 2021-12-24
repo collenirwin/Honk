@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Honk.Server.Models.Data;
 
 /// <summary>
 /// Represents an album of photos.
 /// </summary>
+[Index(nameof(Name), nameof(CreatedByUserId), IsUnique = true)]
 public class Album : BaseModel
 {
     /// <summary>
