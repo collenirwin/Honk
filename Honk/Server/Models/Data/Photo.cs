@@ -12,7 +12,7 @@ public class Photo : BaseModel
     /// <summary>
     /// File path to the photo.
     /// </summary>
-    public string Path { get; set; }
+    public string Path { get; set; } = null!;
 
     /// <summary>
     /// Optional description of the photo.
@@ -34,7 +34,7 @@ public class Photo : BaseModel
     /// <see cref="ApplicationUser.Id"/> of the user who uploaded this photo.
     /// </summary>
     [ForeignKey(nameof(UploadedBy))]
-    public Guid UploadedByUserId { get; set; }
+    public string UploadedByUserId { get; set; } = null!;
 
     /// <summary>
     /// The user who uploaded this photo.
@@ -45,6 +45,4 @@ public class Photo : BaseModel
     /// Tags on this photo.
     /// </summary>
     public ICollection<Tag> Tags { get; set; } = null!;
-
-    public Photo(string path) => Path = path;
 }

@@ -23,6 +23,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     ///<inheritdoc />
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
+
         builder.HasCollation(
             name: CaseInsensiveCollationName,
             provider: "icu",

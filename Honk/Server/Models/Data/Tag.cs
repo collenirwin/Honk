@@ -11,7 +11,7 @@ public class Tag : ITimeTracked
     /// Unique, case-insensive tag text.
     /// </summary>
     [Key]
-    public string TagText { get; set; }
+    public string TagText { get; set; } = null!;
 
     /// <summary>
     /// Photos with this tag.
@@ -28,6 +28,4 @@ public class Tag : ITimeTracked
 
     /// <inheritdoc />
     public DateTime UpdatedOn { get; set; }
-
-    public Tag(string tagText) => TagText = tagText;
 }

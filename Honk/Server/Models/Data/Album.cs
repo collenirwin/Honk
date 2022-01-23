@@ -12,7 +12,7 @@ public class Album : BaseModel
     /// <summary>
     /// The name of the album.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     /// <summary>
     /// Optional description of the album.
@@ -23,7 +23,7 @@ public class Album : BaseModel
     /// <see cref="ApplicationUser.Id"/> of the user who created the album.
     /// </summary>
     [ForeignKey(nameof(CreatedBy))]
-    public Guid CreatedByUserId { get; set; }
+    public string CreatedByUserId { get; set; } = null!;
 
     /// <summary>
     /// User who created the album.
@@ -34,6 +34,4 @@ public class Album : BaseModel
     /// Tags on this album.
     /// </summary>
     public ICollection<Tag> Tags { get; set; } = null!;
-
-    public Album(string name) => Name = name;
 }
