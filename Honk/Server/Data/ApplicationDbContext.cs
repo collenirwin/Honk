@@ -9,10 +9,29 @@ namespace Honk.Server.Data;
 /// </summary>
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
+    /// <summary>
+    /// Collation dbo name for case insensitive comparison.
+    /// </summary>
+    public const string CaseInsensiveCollationName = "case_insensitive_collation";
+
     /// <inheritdoc />
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
+    }
+
+    ///<inheritdoc />
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.HasCollation(
+            name: CaseInsensiveCollationName,
+            provider: "icu",
+            locale: "@colStrength=primary", // ignore accent and case differences
+            deterministic: false);
+
+        builder.Entity<Tag>()
+            .Property(tag => tag.TagText)
+            .UseCollation(CaseInsensiveCollationName);
     }
 
     ///<inheritdoc />
