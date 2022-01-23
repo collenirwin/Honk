@@ -30,5 +30,10 @@ public class Album : BaseModel
     /// </summary>
     public ApplicationUser? CreatedBy { get; set; }
 
+    /// <summary>
+    /// Tags on this album.
+    /// </summary>
+    public ICollection<Tag> Tags { get; set; } = null!;
+
     public Album(string name) => Name = name;
 }

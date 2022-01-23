@@ -41,5 +41,10 @@ public class Photo : BaseModel
     /// </summary>
     public ApplicationUser? UploadedBy { get; set; }
 
+    /// <summary>
+    /// Tags on this photo.
+    /// </summary>
+    public ICollection<Tag> Tags { get; set; } = null!;
+
     public Photo(string path) => Path = path;
 }
