@@ -11,6 +11,7 @@ public class AlbumService
     {
         _httpClient = httpClient;
     }
+
     public async Task CreateAsync(AlbumDto album)
     {
         var response = await _httpClient.PostAsJsonAsync("api/Album/create", album);
