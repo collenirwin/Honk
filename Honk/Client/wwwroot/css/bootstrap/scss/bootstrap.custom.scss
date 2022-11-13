@@ -1,0 +1,67 @@
+﻿$white: #fff;
+$black: #000;
+$teal: #27b58b;
+$red: #dc3545;
+$yellow: rgb(255, 224, 131);
+$cyan: rgb(69, 208, 230);
+
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #2d2d2d;
+$gray-800: #1f1f1f;
+$gray-900: #121212;
+
+.bg-gray-100 { background-color: $gray-100 !important; }
+.bg-gray-200 { background-color: $gray-200 !important; }
+.bg-gray-300 { background-color: $gray-300 !important; }
+.bg-gray-400 { background-color: $gray-400 !important; }
+.bg-gray-500 { background-color: $gray-500 !important; }
+.bg-gray-600 { background-color: $gray-600 !important; }
+.bg-gray-700 { background-color: $gray-700 !important; }
+.bg-gray-800 { background-color: $gray-800 !important; }
+.bg-gray-900 { background-color: $gray-900 !important; }
+
+$body-bg: $gray-900;
+$body-color: $gray-400;
+$primary: $teal;
+$success: $teal;
+$input-bg: $gray-700;
+$input-disabled-bg: $gray-300;
+$input-color: $gray-400;
+$input-border-color: $gray-500;
+$border-width: 0px;
+$border-radius: 0.25rem;
+$card-bg: $gray-800;
+$nav-tabs-border-color: $gray-600;
+$nav-tabs-link-active-color: $white;
+$nav-tabs-link-active-bg: $body-bg;
+$nav-tabs-link-active-border-color: $gray-600 $gray-600 $nav-tabs-link-active-bg;
+$breadcrumb-bg: $body-bg;
+$pagination-bg: $body-bg;
+$pagination-border-color: $gray-700;
+$pagination-hover-bg: $gray-900;
+$pagination-hover-border-color: $gray-700;
+$pagination-disabled-color: $gray-700;
+$pagination-disabled-bg: $gray-300;
+$modal-content-bg: $gray-700;
+$close-text-shadow: 0 1px 0 $gray-800;
+$modal-content-border-color: rgba($black, .2);
+$modal-header-border-color: $modal-content-border-color;
+$list-group-bg: $body-bg;
+$list-group-action-active-bg: $gray-700;
+$jumbotron-bg: $gray-700;
+$progress-bg: $gray-700;
+$border-color: $gray-600;
+$list-group-hover-bg: $gray-900;
+$nav-divider-color: $gray-600;
+$border-radius-sm: .2rem;
+$input-border-radius: $border-radius-sm;
+$custom-control-indicator-border-width: 2px;
+$hr-border-width: 2px;
+$hr-border-color: $gray-600;
+
+@import "./bootstrap";
