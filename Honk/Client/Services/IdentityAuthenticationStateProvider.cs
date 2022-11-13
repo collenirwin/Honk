@@ -4,10 +4,6 @@ using System.Security.Claims;
 
 namespace Honk.Client.Services;
 
-// Note: it looks like AuthenticationStateProvider isn't in the newest version of 
-// Microsoft.AspNetCore.Components.Authorization... we may want to have a look at the newest version's method of
-// keeping authentication state
-
 /// <summary>
 /// Custom identity authentication state provider.
 /// </summary>
