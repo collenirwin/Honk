@@ -1,7 +1,7 @@
 ﻿using Honk.Server.Models.Data;
-using Honk.Server.Services;
 using Honk.Shared.Models;
 using Honk.Shared.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,12 +12,14 @@ namespace Honk.Server.Controllers;
 public class UserController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ITokenService _tokenService;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public UserController(UserManager<ApplicationUser> userManager, ITokenService tokenService)
+    public UserController(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
-        _tokenService = tokenService;
+        _signInManager = signInManager;
     }
 
     [HttpPost("register")]
@@ -45,7 +47,8 @@ public class UserController : ControllerBase
 
         if (result.Succeeded)
         {
-            return Ok();
+            // log the user in after a successful registration
+            return await LogIn(new(model.UserName, model.Password));
         }
 
         // return an internal server error (500) with all error descriptions, newline separated
@@ -53,7 +56,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<TokenDto>> LogIn([FromBody] LogInDto model)
+    public async Task<IActionResult> LogIn([FromBody] LogInDto model)
     {
         if (string.IsNullOrWhiteSpace(model?.UserName) || string.IsNullOrWhiteSpace(model?.Password))
         {
@@ -66,20 +69,57 @@ public class UserController : ControllerBase
 
         if (user is null)
         {
-            return AuthenticationFailed(message: Messages.NoUserByThatName);
+            return Unauthorized(Messages.NoUserByThatName);
         }
 
-        if (await _userManager.CheckPasswordAsync(user, model.Password))
+        var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
+
+        if (result.Succeeded)
         {
-            return AuthenticationSuccessful(token: await _tokenService.GenerateTokenAsync(user));
+            await _signInManager.SignInAsync(user, isPersistent: true);
+
+            var _ = User;
+
+            return Ok();
         }
 
-        return AuthenticationFailed(message: Messages.InvalidPassword);
+        return Unauthorized(Messages.InvalidPassword);
     }
 
-    private static TokenDto AuthenticationSuccessful(string token)
-        => new(token, IsAuthenticated: true, Message: "Success.");
+    [HttpPost("logout")]
+    public async Task<IActionResult> LogOut()
+    {
+        await _signInManager.SignOutAsync();
+        return Ok();
+    }
 
-    private static TokenDto AuthenticationFailed(string message)
-        => new(Token: null, IsAuthenticated: false, message);
+    [HttpGet("current")]
+    [Authorize]
+    public async Task<ActionResult<UserDto>> Current()
+    {
+        var user = await _userManager.GetUserAsync(User);
+
+        return new UserDto(user.Id, user.UserName, user.Email, user.CreatedOn);
+    }
+
+    [HttpPost("changepassword")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword(ChangePasswordDto model)
+    {
+        if (string.IsNullOrWhiteSpace(model?.OldPassword) || string.IsNullOrWhiteSpace(model?.NewPassword))
+        {
+            return BadRequest(Messages.InvalidDto);
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+        if (result.Succeeded)
+        {
+            return Ok();
+        }
+
+        // return an internal server error (500) with all error descriptions, newline separated
+        return StatusCode(500, string.Join("\n", result.Errors.Select(error => error.Description)));
+    }
 }
