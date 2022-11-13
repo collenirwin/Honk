@@ -1,0 +1,92 @@
+﻿@page "/register"
+@inject NavigationManager NavigationManager
+@inject IdentityAuthenticationStateProvider AuthStateProvider
+
+<div class="card shadow">
+    <h4 class="card-header p-3">Register</h4>
+
+    <EditForm class="card-body form-signin" OnValidSubmit="@OnValidSubmit" Model="@_registerViewModel">
+        <LoadingContainer @bind-Loading="_loading">
+            <DataAnnotationsValidator />
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <InputText id="email" class="form-control form-control-sm" placeholder="Email address" autofocus
+                            @bind-Value="@_registerViewModel.Email" />
+                        <label for="email">Email address</label>
+                        <ValidationMessage For="@(() => _registerViewModel.Email)" />
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <InputText id="username" class="form-control form-control-sm" placeholder="Username"
+                            @bind-Value="@_registerViewModel.UserName" />
+                        <label for="username">Username</label>
+                        <ValidationMessage For="@(() => _registerViewModel.UserName)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputText type="password" id="password" class="form-control form-control-sm" placeholder="Password"
+                    @bind-Value="@_registerViewModel.Password" />
+                <label for="password">Password</label>
+                <ValidationMessage For="@(() => _registerViewModel.Password)" />
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputText type="password" id="confirm-password" class="form-control form-control-sm"
+                    placeholder="Confirm password"
+                    @bind-Value="@_registerViewModel.ConfirmedPassword" />
+                <label for="confirm-password">Confirm password</label>
+                <ValidationMessage For="@(() => _registerViewModel.ConfirmedPassword)" />
+            </div>
+
+
+            @if (_errorMessage is not null)
+            {
+                    <div class="mb-3">
+                        <label class="text-danger">@_errorMessage</label>
+                    </div>
+            }
+
+            <button class="btn btn-primary" type="submit">Create account</button>
+
+            <NavLink href="/login" class="link-info p-3">Already have an account</NavLink>
+        </LoadingContainer>
+    </EditForm>
+</div>
+
+
+@code {
+    private RegisterViewModel _registerViewModel = new();
+    private string? _errorMessage;
+    private bool _loading = false;
+
+    private async Task OnValidSubmit()
+    {
+        _loading = true;
+        _errorMessage = null;
+
+        var registerDto = new RegisterDto(
+            UserName: _registerViewModel.UserName!,
+            Email: _registerViewModel.Email!,
+            Password: _registerViewModel.Password!);
+
+        try
+        {
+            await AuthStateProvider.RegisterAsync(registerDto);
+            NavigationManager.NavigateTo("");
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}

@@ -1,0 +1,38 @@
+﻿<div>
+    @if (Loading)
+    {
+        <div class="@HtmlClassList d-flex justify-content-center align-items-center">
+            <div class="spinner-border m-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+
+            @if (LoadingMessage is not null)
+            {
+                <div class="loading-message">@LoadingMessage</div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="@HtmlClassList">
+            @ChildContent
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public bool Loading { get; set; } = false;
+
+    [Parameter]
+    public string? LoadingMessage { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> LoadingChanged { get; set; }
+
+    [Parameter]
+    public string? HtmlClassList { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}
