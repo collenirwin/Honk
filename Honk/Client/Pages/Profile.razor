@@ -1,0 +1,44 @@
+﻿@page "/profile"
+@attribute [Authorize]
+@inject IUserService UserService
+
+<div class="card shadow mb-4">
+    <h4 class="card-header p-3">Profile</h4>
+
+    <LoadingContainer @bind-Loading="_loading" HtmlClassList="card-body">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">Username</th>
+                    <td>@_profileViewModel.UserName</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email address</th>
+                    <td>@_profileViewModel.Email</td>
+                </tr>
+                <tr>
+                    <th scope="row">Created on</th>
+                    <td>@_profileViewModel.CreatedOn</td>
+                </tr>
+            </tbody>
+        </table>
+    </LoadingContainer>
+</div>
+
+<ChangePasswordForm />
+
+@code {
+    private ProfileViewModel _profileViewModel = new();
+    private bool _loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userDto = await UserService.GetUserAsync();
+
+        _profileViewModel.UserName = userDto.UserName;
+        _profileViewModel.Email = userDto.Email;
+        _profileViewModel.CreatedOn = userDto.CreatedOn.ToLocalTime();
+
+        _loading = false;
+    }
+}

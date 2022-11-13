@@ -1,0 +1,82 @@
+﻿@page "/login/{returnUrl?}"
+@inject NavigationManager NavigationManager
+@inject IdentityAuthenticationStateProvider AuthStateProvider
+
+<div class="card shadow">
+    <h4 class="card-header p-3">Log in</h4>
+
+    <EditForm class="card-body form-signin" OnValidSubmit="@OnValidSubmit" Model="@_logInViewModel">
+        <LoadingContainer @bind-Loading="_loading">
+            <DataAnnotationsValidator />
+
+            <div class="form-floating mb-3">
+                <InputText id="email" class="form-control form-control-sm"
+                    placeholder="Username or email address" autofocus
+                    @bind-Value="@_logInViewModel.UserName" />
+                <label for="email">Username or email address</label>
+                <ValidationMessage For="@(() => _logInViewModel.UserName)" />
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputText type="password" id="password" class="form-control form-control-sm" placeholder="Password"
+                    @bind-Value="@_logInViewModel.Password" />
+                <label for="password">Password</label>
+                <ValidationMessage For="@(() => _logInViewModel.Password)" />
+            </div>
+
+
+            @if (_errorMessage is not null)
+            {
+                <div class="mb-3">
+                    <label class="text-danger">@_errorMessage</label>
+                </div>
+            }
+
+            <button class="btn btn-primary" type="submit">Log in</button>
+
+            <NavLink href="/register" class="link-info p-3">Create an account</NavLink>
+        </LoadingContainer>
+    </EditForm>
+</div>
+
+
+@code {
+    private LogInViewModel _logInViewModel = new();
+    private string? _errorMessage;
+    private bool _loading = false;
+
+    [Parameter]
+    public string? ReturnUrl { get; set; }
+
+    private async Task OnValidSubmit()
+    {
+        _loading = true;
+        _errorMessage = null;
+
+        var logInDto = new LogInDto(UserName: _logInViewModel.UserName!, Password: _logInViewModel.Password!);
+
+        try
+        {
+            await AuthStateProvider.LogInAsync(logInDto);
+
+            // if we've been given a valid return url, go there
+            if (ReturnUrl is not null && new Uri(NavigationManager.BaseUri).IsBaseOf(new Uri(ReturnUrl)))
+            {
+                NavigationManager.NavigateTo(ReturnUrl);
+            }
+            else
+            {
+                NavigationManager.NavigateTo(""); // default to the home page
+            }
+
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}
