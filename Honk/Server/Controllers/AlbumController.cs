@@ -2,6 +2,7 @@
 using Honk.Server.Services;
 using Honk.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Honk.Server.Controllers;
 
@@ -22,7 +23,8 @@ public class AlbumController : ControllerBase
         var albumModel = new Album
         {
             Name = album.Name,
-            Description = album.Description
+            Description = album.Description,
+            CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
         };
 
         await _albumService.CreateAsync(albumModel);

@@ -1,5 +1,6 @@
 using Honk.Server.Data;
 using Honk.Server.Models.Data;
+using Honk.Server.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +45,8 @@ builder.Services
          options.UseNpgsql(
              builder.Configuration.GetConnectionString("Default"),
              builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+builder.Services.AddScoped<AlbumService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

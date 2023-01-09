@@ -2,30 +2,38 @@
 @inject AlbumService AlbumService
 
 <h3>Album</h3>
-<EditForm OnValidSubmit="@OnValidSubmit" Model="@_viewModel" >
+
+<EditForm OnValidSubmit="@OnValidSubmit" Model="@_viewModel">
     <DataAnnotationsValidator />
+
     <div class="form-floating mb-3">
         <InputText type="text" id="album-name" class="form-control form-control-sm"
             placeholder="Album name"
             @bind-Value="@_viewModel.Name" />
+
         <label for="album-name">Album name</label>
         <ValidationMessage For="@(() => _viewModel.Name)" />
     </div>
+
     <div class="form-floating mb-3">
         <textarea id="album-description" class="form-control form-control-sm"
             placeholder="Album description"
             @bind="@_viewModel.Description">
         </textarea>
+
         <label for="album-description">Album description</label>
         <ValidationMessage For="@(() => _viewModel.Description)" />
     </div>
+
     <button class="btn btn-primary" type="submit">Create</button>
 </EditForm>
+
 @code {
     private AlbumViewModel _viewModel = new();
+
     private async Task OnValidSubmit()
     {
-        var album = new AlbumDto(_viewModel.Name!,_viewModel.Description);
+        var album = new AlbumDto(_viewModel.Name!, _viewModel.Description);
         await AlbumService.CreateAsync(album);
     }
 }
