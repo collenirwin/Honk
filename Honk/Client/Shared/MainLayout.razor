@@ -11,7 +11,19 @@
         </div>
 
         <article class="content px-4 m-auto" style="max-width: 1000px">
-            @Body
+            <ErrorBoundary>
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent >
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">
+                            <span class="oi oi-x me-1" aria-hidden="true"></span> Error
+                        </h4>
+                        An internal error has occurred. Please try again later.
+                    </div>
+                </ErrorContent>
+            </ErrorBoundary>
         </article>
     </main>
 </div>
