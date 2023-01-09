@@ -77,9 +77,6 @@ public class UserController : ControllerBase
         if (result.Succeeded)
         {
             await _signInManager.SignInAsync(user, isPersistent: true);
-
-            var _ = User;
-
             return Ok();
         }
 
