@@ -7,7 +7,7 @@ namespace Honk.Server.Models.Data;
 /// Represents an album of photos.
 /// </summary>
 [Index(nameof(Name), nameof(CreatedByUserId), IsUnique = true)]
-public class Album : BaseModel
+public class Album : BasePrivacyRestrictable
 {
     /// <summary>
     /// The name of the album.
