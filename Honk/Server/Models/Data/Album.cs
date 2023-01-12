@@ -38,5 +38,5 @@ public class Album : BasePrivacyRestrictable
     /// <summary>
     /// Comments on this album.
     /// </summary>
-    public ICollection<Comment> Comments { get; set; } = null!;
+    public ICollection<AlbumComment> Comments { get; set; } = null!;
 }

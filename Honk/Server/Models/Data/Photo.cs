@@ -49,5 +49,5 @@ public class Photo : BasePrivacyRestrictable
     /// <summary>
     /// Comments on this photo.
     /// </summary>
-    public ICollection<Comment> Comments { get; set; } = null!;
+    public ICollection<PhotoComment> Comments { get; set; } = null!;
 }

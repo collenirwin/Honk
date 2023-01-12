@@ -3,9 +3,9 @@
 namespace Honk.Server.Models.Data;
 
 /// <summary>
-/// Represents a comment on a photo or album.
+/// Base model for comments.
 /// </summary>
-public class Comment : BaseModel
+public abstract class BaseComment : BaseModel
 {
     /// <summary>
     /// The text of the comment.
