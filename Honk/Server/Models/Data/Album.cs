@@ -34,4 +34,9 @@ public class Album : BasePrivacyRestrictable
     /// Tags on this album.
     /// </summary>
     public ICollection<Tag> Tags { get; set; } = null!;
+
+    /// <summary>
+    /// Comments on this album.
+    /// </summary>
+    public ICollection<Comment> Comments { get; set; } = null!;
 }
