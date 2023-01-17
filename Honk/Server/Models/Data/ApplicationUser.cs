@@ -9,6 +9,11 @@ namespace Honk.Server.Models.Data;
 public class ApplicationUser : IdentityUser, ITimeTracked
 {
     /// <summary>
+    /// File path to this user's profile photo.
+    /// </summary>
+    public string? ProfilePhotoPath { get; set; }
+
+    /// <summary>
     /// Users this user has blocked.
     /// </summary>
     [InverseProperty(nameof(Block.BlockedBy))]
