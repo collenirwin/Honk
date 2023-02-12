@@ -7,7 +7,7 @@ namespace Honk.Server.Models.Data;
 /// Represents an album of photos.
 /// </summary>
 [Index(nameof(Name), nameof(CreatedByUserId), IsUnique = true)]
-public class Album : BaseModel
+public class Album : BasePrivacyRestrictable
 {
     /// <summary>
     /// The name of the album.
@@ -34,4 +34,9 @@ public class Album : BaseModel
     /// Tags on this album.
     /// </summary>
     public ICollection<Tag> Tags { get; set; } = null!;
+
+    /// <summary>
+    /// Comments on this album.
+    /// </summary>
+    public ICollection<AlbumComment> Comments { get; set; } = null!;
 }

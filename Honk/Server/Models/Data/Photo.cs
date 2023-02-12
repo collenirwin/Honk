@@ -7,7 +7,7 @@ namespace Honk.Server.Models.Data;
 /// Represents an uploaded photo in an album.
 /// </summary>
 [Index(nameof(Path), nameof(AlbumId), IsUnique = true)]
-public class Photo : BaseModel
+public class Photo : BasePrivacyRestrictable
 {
     /// <summary>
     /// File path to the photo.
@@ -45,4 +45,9 @@ public class Photo : BaseModel
     /// Tags on this photo.
     /// </summary>
     public ICollection<Tag> Tags { get; set; } = null!;
+
+    /// <summary>
+    /// Comments on this photo.
+    /// </summary>
+    public ICollection<PhotoComment> Comments { get; set; } = null!;
 }

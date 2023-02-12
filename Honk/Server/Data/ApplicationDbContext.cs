@@ -14,6 +14,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     /// </summary>
     public const string CaseInsensiveCollationName = "case_insensitive_collation";
 
+    public DbSet<Album> Albums => Set<Album>();
+    public DbSet<AlbumComment> AlbumComments => Set<AlbumComment>();
+    public DbSet<AlbumCommentNotification> AlbumCommentNotifications => Set<AlbumCommentNotification>();
+    public DbSet<Photo> Photos => Set<Photo>();
+    public DbSet<PhotoComment> PhotoComments => Set<PhotoComment>();
+    public DbSet<PhotoCommentNotification> PhotoCommentNotifications => Set<PhotoCommentNotification>();
+    public DbSet<Friendship> Friendships => Set<Friendship>();
+    public DbSet<FriendRequestNotification> FriendRequestNotifications => Set<FriendRequestNotification>();
+    public DbSet<Block> Blocks => Set<Block>();
+    public DbSet<Tag> Tags => Set<Tag>();
+
     /// <inheritdoc />
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -34,6 +45,17 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Tag>()
             .Property(tag => tag.TagText)
             .UseCollation(CaseInsensiveCollationName);
+
+        // map friendships both ways
+        builder.Entity<Friendship>()
+            .HasOne(f => f.User1)
+            .WithMany()
+            .HasForeignKey(f => f.User1Id);
+
+        builder.Entity<Friendship>()
+            .HasOne(f => f.User2)
+            .WithMany()
+            .HasForeignKey(f => f.User2Id);
     }
 
     ///<inheritdoc />
