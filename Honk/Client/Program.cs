@@ -3,6 +3,7 @@ using Honk.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IdentityAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(
     sp => sp.GetRequiredService<IdentityAuthenticationStateProvider>());
+
+builder.Services.AddMudServices();
 
 var baseUri = new Uri(builder.HostEnvironment.BaseAddress);
 var httpClientName = "Honk.ServerAPI";
