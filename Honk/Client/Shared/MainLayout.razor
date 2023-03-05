@@ -3,7 +3,7 @@
 
 @inherits LayoutComponentBase
 
-<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" />
+<MudThemeProvider Theme="_theme" @bind-IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -46,8 +46,24 @@
     bool _isDarkMode = false;
     bool _drawerOpen = true;
 
+    MudTheme _theme = new()
+    {
+        Palette = new()
+        {
+            Primary = "#27b58b",
+            Secondary = Colors.LightBlue.Default,
+            Tertiary = Colors.DeepOrange.Accent1
+        }
+    };
+
     protected override async Task OnInitializedAsync()
     {
+        _theme.PaletteDark.Primary = _theme.Palette.Primary;
+        _theme.PaletteDark.Secondary = _theme.Palette.Secondary;
+        _theme.PaletteDark.Tertiary = _theme.Palette.Tertiary;
+        _theme.PaletteDark.Background = "#121212";
+        _theme.PaletteDark.Surface = "#151515";
+
         _isDarkMode = await LocalStorage.GetItemAsync<bool>(_darkModeStorageKey);
     }
 
