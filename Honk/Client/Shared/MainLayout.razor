@@ -7,7 +7,7 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Color="@Color.Primary">
+    <MudAppBar Color="@Color.Transparent" Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
             OnClick="@DrawerToggle" />
         <MudText Typo="Typo.h5" Class="ml-3" style="cursor: pointer;" onclick="@(() => Navigation.NavigateTo("/"))">
@@ -16,7 +16,7 @@
         <MudSpacer />
         <UserNav />
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="@DrawerClipMode.Docked">
+    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="@DrawerClipMode.Docked" Elevation="0">
         <NavMenu />
     </MudDrawer>
     <MudMainContent>

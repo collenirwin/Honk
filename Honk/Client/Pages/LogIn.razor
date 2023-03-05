@@ -3,11 +3,11 @@
 @inject IdentityAuthenticationStateProvider AuthStateProvider
 
 <EditForm OnValidSubmit="@OnValidSubmit" Model="@_model">
-    <MudCard Style="max-width: 400px;" Class="ml-auto mr-auto mt-10" Elevation="2">
+    <MudCard Style="max-width: 400px;" Class="ml-auto mr-auto mt-10" Outlined="true">
         <MudCardHeader Class="pb-0" style="text-align: center">
             <CardHeaderContent>
                 <MudIcon Icon="@Icons.Material.Filled.Person" Style="width: 50px; height: 50px;" />
-                <MudText Typo="Typo.h6">Log into Honk</MudText>
+                <MudText Typo="Typo.h6">Log in to Honk</MudText>
             </CardHeaderContent>
         </MudCardHeader>
 
@@ -25,6 +25,10 @@
                         Label="Password" InputType="InputType.Password"
                         @bind-Value="@_model.Password" For="(() => _model.Password)"
                         OnlyValidateIfDirty="true" />
+                    <p style="text-align: right">
+                        <MudLink Href="/forgotpassword" Typo="Typo.caption">Forgot your password?</MudLink>
+                    </p>
+                    
                 </MudFocusTrap>
                     
 
@@ -42,7 +46,7 @@
                 Create an account
             </MudButton>
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
-                       Disabled="@_loading">
+                       Disabled="@_loading" DisableElevation="true">
                 Log in
             </MudButton>
         </MudCardActions>
