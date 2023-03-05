@@ -10,7 +10,7 @@
     <MudAppBar Color="@Color.Primary">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
             OnClick="@DrawerToggle" />
-        <MudText Typo="Typo.h6" style="cursor: pointer;" onclick="@(() => Navigation.NavigateTo("/"))">
+        <MudText Typo="Typo.h5" Class="ml-3" style="cursor: pointer;" onclick="@(() => Navigation.NavigateTo("/"))">
             Honk
         </MudText>
         <MudSpacer />
@@ -20,7 +20,7 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-2">
             <ErrorBoundary>
                 <ChildContent>
                     @Body
@@ -41,6 +41,5 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
-        throw new Exception("hi");
     }
 }
