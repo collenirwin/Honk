@@ -1,22 +1,28 @@
 ﻿@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
 
 @inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
     <MudAppBar Color="@Color.Transparent" Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
-            OnClick="@DrawerToggle" />
+            OnClick="DrawerToggle" />
         <MudText Typo="Typo.h5" Class="ml-3" style="cursor: pointer;" onclick="@(() => Navigation.NavigateTo("/"))">
             Honk
         </MudText>
         <MudSpacer />
+        <MudToggleIconButton
+            Toggled="@_isDarkMode"
+            ToggledChanged="DarkModeToggled"
+            Icon="@Icons.Material.Filled.DarkMode" Title="Switch to dark mode"
+            ToggledIcon="@Icons.Material.Filled.LightMode" ToggledTitle="Switch to light mode" />
         <UserNav />
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="@DrawerClipMode.Docked" Elevation="0">
+    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="@DrawerClipMode.Docked" Elevation="0" Color="@Color.Transparent">
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
@@ -36,7 +42,20 @@
 </MudLayout>
 
 @code {
+    const string _darkModeStorageKey = "isDarkMode";
+    bool _isDarkMode = false;
     bool _drawerOpen = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isDarkMode = await LocalStorage.GetItemAsync<bool>(_darkModeStorageKey);
+    }
+
+    async Task DarkModeToggled(bool toggled)
+    {
+        _isDarkMode = toggled;
+        await LocalStorage.SetItemAsync(_darkModeStorageKey, _isDarkMode);
+    }
 
     void DrawerToggle()
     {
