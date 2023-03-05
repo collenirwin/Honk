@@ -1,5 +1,5 @@
 ﻿@page "/register"
-@inject NavigationManager NavigationManager
+@inject NavigationManager Navigation
 @inject IdentityAuthenticationStateProvider AuthStateProvider
 
 <div class="card shadow">
@@ -78,7 +78,7 @@
         try
         {
             await AuthStateProvider.RegisterAsync(registerDto);
-            NavigationManager.NavigateTo("");
+            Navigation.NavigateTo("");
         }
         catch (Exception ex)
         {

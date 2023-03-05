@@ -1,5 +1,5 @@
 ﻿@page "/login/{returnUrl?}"
-@inject NavigationManager NavigationManager
+@inject NavigationManager Navigation
 @inject IdentityAuthenticationStateProvider AuthStateProvider
 
 <EditForm OnValidSubmit="@OnValidSubmit" Model="@_model">
@@ -41,8 +41,7 @@
         </MudCardContent>
 
         <MudCardActions>
-            <MudButton Variant="Variant.Text" Color="Color.Primary" Class="mr-auto"
-                       OnClick="@(() => NavigationManager.NavigateTo("/register"))">
+            <MudButton Variant="Variant.Text" Color="Color.Primary" Class="mr-auto" Href="/register">
                 Create an account
             </MudButton>
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
@@ -73,13 +72,13 @@
             await AuthStateProvider.LogInAsync(logInDto);
 
             // if we've been given a valid return url, go there
-            if (ReturnUrl is not null && new Uri(NavigationManager.BaseUri).IsBaseOf(new Uri(ReturnUrl)))
+            if (ReturnUrl is not null && new Uri(Navigation.BaseUri).IsBaseOf(new Uri(ReturnUrl)))
             {
-                NavigationManager.NavigateTo(ReturnUrl);
+                Navigation.NavigateTo(ReturnUrl);
             }
             else
             {
-                NavigationManager.NavigateTo(""); // default to the home page
+                Navigation.NavigateTo(""); // default to the home page
             }
 
         }

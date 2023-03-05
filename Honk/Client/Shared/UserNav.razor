@@ -7,10 +7,10 @@
         <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
     </Authorized>
     <NotAuthorized>
-        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="@(() => Navigation.NavigateTo("/register"))">
+        <MudButton Color="Color.Primary" Variant="Variant.Text" Href="/register">
             Register
         </MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="@(() => Navigation.NavigateTo("/login"))">
+        <MudButton Color="Color.Primary" Variant="Variant.Text" Href="/login">
             Log in
         </MudButton>
     </NotAuthorized>
