@@ -15,22 +15,18 @@
             <LoadingContainer @bind-Loading="_loading">
                 <DataAnnotationsValidator />
 
-                <MudFocusTrap>
-                    <MudTextField
-                        Label="Username or email address" autofocus
-                        @bind-Value="@_model.UserName" For="(() => _model.UserName)"
-                        OnlyValidateIfDirty="true" />
+                <MudTextField
+                    Label="Username or email address" AutoFocus
+                    @bind-Value="@_model.UserName" For="(() => _model.UserName)"
+                    OnlyValidateIfDirty="true" />
 
-                    <MudTextField
-                        Label="Password" InputType="InputType.Password"
-                        @bind-Value="@_model.Password" For="(() => _model.Password)"
-                        OnlyValidateIfDirty="true" />
-                    <p style="text-align: right">
-                        <MudLink Href="/forgotpassword" Typo="Typo.caption">Forgot your password?</MudLink>
-                    </p>
-                    
-                </MudFocusTrap>
-                    
+                <MudTextField
+                    Label="Password" InputType="InputType.Password"
+                    @bind-Value="@_model.Password" For="(() => _model.Password)"
+                    OnlyValidateIfDirty="true" />
+                <p style="text-align: right">
+                    <MudLink Href="/forgotpassword" Typo="Typo.caption">Forgot your password?</MudLink>
+                </p>
 
                 @if (_errorMessage is not null)
                 {

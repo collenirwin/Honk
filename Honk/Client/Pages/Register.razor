@@ -2,66 +2,65 @@
 @inject NavigationManager Navigation
 @inject IdentityAuthenticationStateProvider AuthStateProvider
 
-<div class="card shadow">
-    <h4 class="card-header p-3">Register</h4>
+<EditForm class="card-body form-signin" OnValidSubmit="@OnValidSubmit" Model="@_model">
+    <MudCard Style="max-width: 600px;" Class="ml-auto mr-auto mt-10">
+        <MudCardHeader Class="pb-0" style="text-align: center">
+            <CardHeaderContent>
+                <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Style="width: 50px; height: 50px;" />
+                <MudText Typo="Typo.h6">Register for Honk</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
 
-    <EditForm class="card-body form-signin" OnValidSubmit="@OnValidSubmit" Model="@_registerViewModel">
-        <LoadingContainer @bind-Loading="_loading">
-            <DataAnnotationsValidator />
+        <MudCardContent>
+            <LoadingContainer @bind-Loading="_loading">
+                <DataAnnotationsValidator />
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <InputText id="email" class="form-control form-control-sm" placeholder="Email address" autofocus
-                            @bind-Value="@_registerViewModel.Email" />
-                        <label for="email">Email address</label>
-                        <ValidationMessage For="@(() => _registerViewModel.Email)" />
-                    </div>
-                </div>
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudTextField
+                            Label="Email address" AutoFocus
+                            @bind-Value="@_model.Email" For="@(() => _model.Email)"
+                            OnlyValidateIfDirty="true" />
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudTextField
+                            Label="Username"
+                            @bind-Value="@_model.UserName" For="@(() => _model.UserName)"
+                            OnlyValidateIfDirty="true" />
+                    </MudItem>
+                </MudGrid>
 
-                <div class="col">
-                    <div class="form-floating mb-3">
-                        <InputText id="username" class="form-control form-control-sm" placeholder="Username"
-                            @bind-Value="@_registerViewModel.UserName" />
-                        <label for="username">Username</label>
-                        <ValidationMessage For="@(() => _registerViewModel.UserName)" />
-                    </div>
-                </div>
-            </div>
+                <MudTextField
+                    Label="Password" InputType="InputType.Password"
+                    @bind-Value="@_model.Password" For="@(() => _model.Password)"
+                    OnlyValidateIfDirty="true" />
 
-            <div class="form-floating mb-3">
-                <InputText type="password" id="password" class="form-control form-control-sm" placeholder="Password"
-                    @bind-Value="@_registerViewModel.Password" />
-                <label for="password">Password</label>
-                <ValidationMessage For="@(() => _registerViewModel.Password)" />
-            </div>
+                <MudTextField
+                    Label="Confirm password"
+                    @bind-Value="@_model.ConfirmedPassword" For="@(() => _model.ConfirmedPassword)"
+                    OnlyValidateIfDirty="true" />
 
-            <div class="form-floating mb-3">
-                <InputText type="password" id="confirm-password" class="form-control form-control-sm"
-                    placeholder="Confirm password"
-                    @bind-Value="@_registerViewModel.ConfirmedPassword" />
-                <label for="confirm-password">Confirm password</label>
-                <ValidationMessage For="@(() => _registerViewModel.ConfirmedPassword)" />
-            </div>
+                @if (_errorMessage is not null)
+                {
+                    <MudText Color="Color.Error">@_errorMessage</MudText>
+                }
+            </LoadingContainer>
+        </MudCardContent>
 
-
-            @if (_errorMessage is not null)
-            {
-                    <div class="mb-3">
-                        <label class="text-danger">@_errorMessage</label>
-                    </div>
-            }
-
-            <button class="btn btn-primary" type="submit">Create account</button>
-
-            <NavLink href="/login" class="link-info p-3">Already have an account</NavLink>
-        </LoadingContainer>
-    </EditForm>
-</div>
-
+        <MudCardActions>
+            <MudButton Variant="Variant.Text" Color="Color.Primary" Class="mr-auto" Href="/login">
+                Already have an account
+            </MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Color="Color.Primary" Class="ml-auto"
+                       Disabled="@_loading" DisableElevation="true">
+                Create account
+            </MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
 
 @code {
-    private RegisterViewModel _registerViewModel = new();
+    private RegisterViewModel _model = new();
     private string? _errorMessage;
     private bool _loading = false;
 
@@ -71,9 +70,9 @@
         _errorMessage = null;
 
         var registerDto = new RegisterDto(
-            UserName: _registerViewModel.UserName!,
-            Email: _registerViewModel.Email!,
-            Password: _registerViewModel.Password!);
+            UserName: _model.UserName!,
+            Email: _model.Email!,
+            Password: _model.Password!);
 
         try
         {
