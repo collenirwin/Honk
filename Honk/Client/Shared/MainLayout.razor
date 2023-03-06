@@ -42,11 +42,11 @@
 </MudLayout>
 
 @code {
-    const string _darkModeStorageKey = "isDarkMode";
-    bool _isDarkMode = false;
-    bool _drawerOpen = true;
+    private const string _darkModeStorageKey = "isDarkMode";
+    private bool _isDarkMode = false;
+    private bool _drawerOpen = true;
 
-    MudTheme _theme = new()
+    private MudTheme _theme = new()
     {
         Palette = new()
         {
@@ -67,13 +67,13 @@
         _isDarkMode = await LocalStorage.GetItemAsync<bool>(_darkModeStorageKey);
     }
 
-    async Task DarkModeToggled(bool toggled)
+    private async Task DarkModeToggled(bool toggled)
     {
         _isDarkMode = toggled;
         await LocalStorage.SetItemAsync(_darkModeStorageKey, _isDarkMode);
     }
 
-    void DrawerToggle()
+    private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
