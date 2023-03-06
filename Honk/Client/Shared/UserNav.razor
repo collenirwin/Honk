@@ -17,8 +17,12 @@
                 }
             </ActivatorContent>
             <ChildContent>
-                <MudMenuItem Href="/profile">Profile</MudMenuItem>
-                <MudMenuItem OnClick="BeginSignOut">Log out</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Person" Href="/profile">
+                    Profile
+                </MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="BeginSignOut">
+                    Log out
+                </MudMenuItem>
             </ChildContent>
         </MudMenu>
     </Authorized>
