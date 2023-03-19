@@ -24,7 +24,7 @@ public class AlbumController : ControllerBase
         {
             Name = album.Name,
             Description = album.Description,
-            CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+            CreatedByUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)!
         };
 
         await _albumService.CreateAsync(albumModel);
