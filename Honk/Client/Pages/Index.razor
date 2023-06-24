@@ -1,9 +1,49 @@
-﻿@page "/"
+﻿@page "/albums"
+@attribute [Authorize]
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Albums</PageTitle>
 
-<h1>Hello, world!</h1>
+<MudText Typo="Typo.h3" Class="mb-7">
+    Albums
+    <MudFab
+        Color="Color.Primary"
+        StartIcon="@Icons.Material.Filled.Add"
+        Style="float: right;"
+        Title="Add a new album" />
+</MudText>
 
-Welcome to your new app.
+<MudGrid Class="mb-7">
+    @for (var x = 0; x < 12; x++)
+    {
+        var index = x;
 
-<AlbumForm/>
+        <MudItem xs="12" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">My Cool Album @index</MudText>
+                    <MudText Typo="Typo.caption" Class="text-muted">The description of my cool album (@index).</MudText>
+
+                    <div class="mt-2">
+                        <MudChip Icon="@Icons.Material.Filled.Tag" Size="Size.Small" Variant="Variant.Text" Color="Color.Secondary">my</MudChip>
+                        <MudChip Icon="@Icons.Material.Filled.Tag" Size="Size.Small" Variant="Variant.Text" Color="Color.Secondary">cool</MudChip>
+                        <MudChip Icon="@Icons.Material.Filled.Tag" Size="Size.Small" Variant="Variant.Text" Color="Color.Secondary">tags</MudChip>
+                    </div>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>
+
+<div class="text-center">
+    <MudPagination
+        Color="Color.Primary"
+        BoundaryCount="1"
+        MiddleCount="5"
+        Count="22"
+        @bind-Selected="@_selected" />
+</div>
+
+
+@code {
+    private int _selected = 1;
+}
