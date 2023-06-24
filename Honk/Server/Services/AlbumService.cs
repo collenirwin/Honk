@@ -1,5 +1,6 @@
 ﻿using Honk.Server.Data;
 using Honk.Server.Models.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Honk.Server.Services;
 
@@ -16,5 +17,25 @@ public class AlbumService
     {
         _context.Set<Album>().Add(album);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Album album)
+    {
+        var oldAlbum = await GetAsync(album.Id)
+            ?? throw new InvalidOperationException("Album to update not found.");
+
+        // do not allow changes to CreatedByUserId
+        album.CreatedByUserId = oldAlbum.CreatedByUserId;
+
+        _context.Entry(oldAlbum).CurrentValues.SetValues(album);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Album?> GetAsync(Guid id)
+    {
+        return await _context.Albums
+            .Where(album => album.Id == id)
+            .Include(album => album.Tags)
+            .FirstOrDefaultAsync();
     }
 }

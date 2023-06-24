@@ -1,0 +1,93 @@
+﻿@page "/albums/album-form"
+@page "/albums/album-form/{id:guid}"
+@attribute [Authorize]
+
+@inject AlbumService AlbumService
+@inject NavigationManager Navigation
+
+<PageTitle>Album</PageTitle>
+
+<EditForm OnValidSubmit="@OnValidSubmit" Model="@_model">
+
+    <MudText Typo="Typo.h3" Class="mb-7">
+        Album
+        <MudFab
+            Color="Color.Primary"
+            StartIcon="@Icons.Material.Filled.Save"
+            Style="float: right;"
+            Title="Save the album"
+            ButtonType="ButtonType.Submit"
+            Disabled="@_loading" />
+    </MudText>
+
+
+    <DataAnnotationsValidator />
+
+    <LoadingContainer @bind-Loading="_loading">
+        <MudTextField Label="Title" AutoFocus
+            @bind-Value="@_model.Name" For="(() => _model.Name)"
+            OnlyValidateIfDirty="true" />
+
+        <MudTextField Label="Description"
+            @bind-Value="@_model.Description" For="(() => _model.Description)"
+            Lines="3"
+            OnlyValidateIfDirty="true" />
+    </LoadingContainer>
+
+    @if (_errorMessage is not null)
+    {
+        <MudText Color="Color.Error" Class="mt-2">@_errorMessage</MudText>
+    }
+</EditForm>
+
+@code {
+    private AlbumViewModel _model = new();
+    private string? _errorMessage;
+    private bool _loading = false;
+
+    [Parameter]
+    public Guid? Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id is null)
+        {
+            return;
+        }
+
+        var albumDto = await AlbumService.GetAsync(Id.Value);
+        _model.Name = albumDto.Name;
+        _model.Description = albumDto.Description;
+        _model.Tags = albumDto.Tags;
+    }
+
+    private async Task OnValidSubmit()
+    {
+        _loading = true;
+        _errorMessage = null;
+
+        try
+        {
+            var album = new AlbumDto(_model.Name!, _model.Description, _model.Tags);
+
+            if (Id is null)
+            {
+                Id = await AlbumService.CreateAsync(album);
+            }
+            else
+            {
+                await AlbumService.UpdateAsync(Id.Value, album);
+            }
+
+            Navigation.NavigateTo($"/albums/album/{Id}");
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}
