@@ -1,14 +1,12 @@
 ﻿<div>
     @if (Loading)
     {
-        <div class="@HtmlClassList d-flex justify-content-center align-items-center">
-            <div class="spinner-border m-3" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
+        <div class="@HtmlClassList d-flex justify-center align-items-center">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
 
             @if (LoadingMessage is not null)
             {
-                <div class="loading-message">@LoadingMessage</div>
+                <MudText Class="loading-message">@LoadingMessage</MudText>
             }
         </div>
     }

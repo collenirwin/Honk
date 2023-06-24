@@ -1,47 +1,55 @@
 ﻿@page "/login/{returnUrl?}"
-@inject NavigationManager NavigationManager
+@inject NavigationManager Navigation
 @inject IdentityAuthenticationStateProvider AuthStateProvider
 
-<div class="card shadow">
-    <h4 class="card-header p-3">Log in</h4>
+<EditForm OnValidSubmit="@OnValidSubmit" Model="@_model">
+    <MudCard Style="max-width: 400px;" Class="ml-auto mr-auto mt-10" Outlined="true">
+        <MudCardHeader Class="pb-0" style="text-align: center">
+            <CardHeaderContent>
+                <MudIcon Icon="@Icons.Material.Filled.Login" Style="width: 50px; height: 50px;" />
+                <MudText Typo="Typo.h6">Log in to Honk</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
 
-    <EditForm class="card-body form-signin" OnValidSubmit="@OnValidSubmit" Model="@_logInViewModel">
-        <LoadingContainer @bind-Loading="_loading">
-            <DataAnnotationsValidator />
+        <MudCardContent>
+            <LoadingContainer @bind-Loading="_loading">
+                <DataAnnotationsValidator />
 
-            <div class="form-floating mb-3">
-                <InputText id="email" class="form-control form-control-sm"
-                    placeholder="Username or email address" autofocus
-                    @bind-Value="@_logInViewModel.UserName" />
-                <label for="email">Username or email address</label>
-                <ValidationMessage For="@(() => _logInViewModel.UserName)" />
-            </div>
+                <MudTextField
+                    Label="Username or email address" AutoFocus
+                    @bind-Value="@_model.UserName" For="(() => _model.UserName)"
+                    OnlyValidateIfDirty="true" />
 
-            <div class="form-floating mb-3">
-                <InputText type="password" id="password" class="form-control form-control-sm" placeholder="Password"
-                    @bind-Value="@_logInViewModel.Password" />
-                <label for="password">Password</label>
-                <ValidationMessage For="@(() => _logInViewModel.Password)" />
-            </div>
+                <MudTextField
+                    Label="Password" InputType="InputType.Password"
+                    @bind-Value="@_model.Password" For="(() => _model.Password)"
+                    OnlyValidateIfDirty="true" />
+                <p style="text-align: right">
+                    <MudLink Href="/forgotpassword" Typo="Typo.caption">Forgot your password?</MudLink>
+                </p>
 
+                @if (_errorMessage is not null)
+                {
+                    <MudText Color="Color.Error">@_errorMessage</MudText>
+                }
 
-            @if (_errorMessage is not null)
-            {
-                <div class="mb-3">
-                    <label class="text-danger">@_errorMessage</label>
-                </div>
-            }
+            </LoadingContainer>
+        </MudCardContent>
 
-            <button class="btn btn-primary" type="submit">Log in</button>
-
-            <NavLink href="/register" class="link-info p-3">Create an account</NavLink>
-        </LoadingContainer>
-    </EditForm>
-</div>
-
+        <MudCardActions>
+            <MudButton Variant="Variant.Text" Color="Color.Primary" Class="mr-auto" Href="/register">
+                Create an account
+            </MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Color="Color.Primary" Class="ml-auto"
+                       Disabled="@_loading" DisableElevation="true">
+                Log in
+            </MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
 
 @code {
-    private LogInViewModel _logInViewModel = new();
+    private LogInViewModel _model = new();
     private string? _errorMessage;
     private bool _loading = false;
 
@@ -53,20 +61,20 @@
         _loading = true;
         _errorMessage = null;
 
-        var logInDto = new LogInDto(UserName: _logInViewModel.UserName!, Password: _logInViewModel.Password!);
+        var logInDto = new LogInDto(UserName: _model.UserName!, Password: _model.Password!);
 
         try
         {
             await AuthStateProvider.LogInAsync(logInDto);
 
             // if we've been given a valid return url, go there
-            if (ReturnUrl is not null && new Uri(NavigationManager.BaseUri).IsBaseOf(new Uri(ReturnUrl)))
+            if (ReturnUrl is not null && new Uri(Navigation.BaseUri).IsBaseOf(new Uri(ReturnUrl)))
             {
-                NavigationManager.NavigateTo(ReturnUrl);
+                Navigation.NavigateTo(ReturnUrl);
             }
             else
             {
-                NavigationManager.NavigateTo(""); // default to the home page
+                Navigation.NavigateTo(""); // default to the home page
             }
 
         }

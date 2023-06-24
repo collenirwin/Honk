@@ -96,7 +96,12 @@ public class UserController : ControllerBase
     {
         var user = await _userManager.GetUserAsync(User);
 
-        return new UserDto(user.Id, user.UserName, user.Email, user.CreatedOn);
+        if (user is null)
+        {
+            return Unauthorized(Messages.UserDoesNotExist);
+        }
+
+        return new UserDto(user.Id, user.UserName!, user.Email!, user.CreatedOn);
     }
 
     [HttpPost("changepassword")]
@@ -109,6 +114,12 @@ public class UserController : ControllerBase
         }
 
         var user = await _userManager.GetUserAsync(User);
+
+        if (user is null)
+        {
+            return Unauthorized(Messages.UserDoesNotExist);
+        }
+
         var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
         if (result.Succeeded)

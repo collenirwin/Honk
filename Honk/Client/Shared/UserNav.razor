@@ -3,12 +3,36 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="/profile">@(context.User.Identity?.Name)</a>
-        <button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+        <MudMenu AnchorOrigin="Origin.TopRight" Class="pl-2">
+            <ActivatorContent>
+                @if (false) // TODO: user profile picture
+                {
+                    
+                }
+                else
+                {
+                    <MudAvatar Color="Color.Default" Variant="Variant.Outlined" Style="height: 30px; width: 30px;">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" />
+                    </MudAvatar>
+                }
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem Icon="@Icons.Material.Filled.Person" Href="/profile">
+                    Profile
+                </MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="BeginSignOut">
+                    Log out
+                </MudMenuItem>
+            </ChildContent>
+        </MudMenu>
     </Authorized>
     <NotAuthorized>
-        <a href="/register">Register</a>
-        <a href="/login">Log in</a>
+        <MudButton Color="Color.Primary" Variant="Variant.Text" Href="/register">
+            Register
+        </MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Text" Href="/login">
+            Log in
+        </MudButton>
     </NotAuthorized>
 </AuthorizeView>
 

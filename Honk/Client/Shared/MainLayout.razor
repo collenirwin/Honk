@@ -1,29 +1,81 @@
-﻿@inherits LayoutComponentBase
+﻿@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
 
-<div class="page">
-    <div class="sidebar">
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_theme" @bind-IsDarkMode="@_isDarkMode" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Color="@Color.Transparent" Elevation="0">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+            OnClick="DrawerToggle" />
+        <MudText Typo="Typo.h5" Class="ml-3" style="cursor: pointer;" onclick="@(() => Navigation.NavigateTo("/"))">
+            Honk
+        </MudText>
+        <MudSpacer />
+        <MudToggleIconButton
+            Toggled="@_isDarkMode"
+            ToggledChanged="DarkModeToggled"
+            Icon="@Icons.Material.Filled.DarkMode" Title="Switch to dark mode"
+            ToggledIcon="@Icons.Material.Filled.LightMode" ToggledTitle="Switch to light mode" />
+        <UserNav />
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_drawerOpen" ClipMode="@DrawerClipMode.Docked" Elevation="0" Color="@Color.Transparent">
         <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4 navbar-dark bg-gray-900">
-            <UserNav />
-        </div>
-
-        <article class="content px-4 m-auto" style="max-width: 1000px">
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-2">
             <ErrorBoundary>
                 <ChildContent>
                     @Body
                 </ChildContent>
-                <ErrorContent >
-                    <div class="alert alert-danger" role="alert">
-                        <h4 class="alert-heading">
-                            <span class="oi oi-x me-1" aria-hidden="true"></span> Error
-                        </h4>
+                <ErrorContent>
+                    <MudAlert Severity="Severity.Error">
                         An internal error has occurred. Please try again later.
-                    </div>
+                    </MudAlert>
                 </ErrorContent>
             </ErrorBoundary>
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private const string _darkModeStorageKey = "isDarkMode";
+    private bool _isDarkMode = false;
+    private bool _drawerOpen = true;
+
+    private MudTheme _theme = new()
+    {
+        Palette = new()
+        {
+            Primary = "#27b58b",
+            Secondary = Colors.LightBlue.Default,
+            Tertiary = Colors.DeepOrange.Accent1
+        }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        _theme.PaletteDark.Primary = _theme.Palette.Primary;
+        _theme.PaletteDark.Secondary = _theme.Palette.Secondary;
+        _theme.PaletteDark.Tertiary = _theme.Palette.Tertiary;
+        _theme.PaletteDark.Background = "#121212";
+        _theme.PaletteDark.Surface = "#151515";
+        _theme.PaletteDark.HoverOpacity = 0.2;
+
+        _isDarkMode = await LocalStorage.GetItemAsync<bool>(_darkModeStorageKey);
+    }
+
+    private async Task DarkModeToggled(bool toggled)
+    {
+        _isDarkMode = toggled;
+        await LocalStorage.SetItemAsync(_darkModeStorageKey, _isDarkMode);
+    }
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

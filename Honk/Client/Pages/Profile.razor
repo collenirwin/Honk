@@ -1,32 +1,36 @@
 ﻿@page "/profile"
 @attribute [Authorize]
 @inject IUserService UserService
+<MudPaper Class="pa-4 mud-height-full">
+        <MudItem>
+            
+                <MudText Typo="Typo.h4" Class="mb-3">
+                    Profile
+                </MudText>
 
-<div class="card shadow mb-4">
-    <h4 class="card-header p-3">Profile</h4>
+                <LoadingContainer @bind-Loading="_loading" HtmlClassList="card-body">
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudField Label="Username">@_profileViewModel.UserName</MudField>
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudField Label="Email address">@_profileViewModel.Email</MudField>
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudField Label="Created on">@_profileViewModel.CreatedOn</MudField>
+                        </MudItem>
+                    </MudGrid>
+                </LoadingContainer>
+        </MudItem>
 
-    <LoadingContainer @bind-Loading="_loading" HtmlClassList="card-body">
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th scope="row">Username</th>
-                    <td>@_profileViewModel.UserName</td>
-                </tr>
-                <tr>
-                    <th scope="row">Email address</th>
-                    <td>@_profileViewModel.Email</td>
-                </tr>
-                <tr>
-                    <th scope="row">Created on</th>
-                    <td>@_profileViewModel.CreatedOn</td>
-                </tr>
-            </tbody>
-        </table>
-    </LoadingContainer>
-</div>
-
-<ChangePasswordForm />
-
+        <MudItem Class="mt-10">
+            <ChangePasswordForm />
+        </MudItem>
+    </MudPaper>
 @code {
     private ProfileViewModel _profileViewModel = new();
     private bool _loading = true;
