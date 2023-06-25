@@ -1,6 +1,8 @@
 ﻿using Honk.Server.Data;
 using Honk.Server.Models.Data;
 using Microsoft.EntityFrameworkCore;
+using ToPage;
+using ToPage.EFCore;
 
 namespace Honk.Server.Services;
 
@@ -37,6 +39,15 @@ public class AlbumService
             .Where(album => album.Id == id)
             .Include(album => album.Tags)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<IPageWithCounts<Album>> GetPageForUserAsync(string userId, int pageNumber, int itemsPerPage)
+    {
+        return await _context.Albums
+            .Where(album => album.CreatedByUserId == userId)
+            .Include(album => album.Tags)
+            .OrderBy(album => album.Name)
+            .ToPageWithCountsAsync(pageNumber, itemsPerPage);
     }
 
     public async Task DeleteAsync(Guid id)

@@ -37,6 +37,15 @@ public class AlbumService
         return albumDto!;
     }
 
+    public async Task<PageDto<AlbumDto>> GetOwnAsync(int pageNumber, int itemsPerPage = 12)
+    {
+        var response = await _httpClient.GetAsync($"api/album/get-own/{pageNumber}?itemsPerPage={itemsPerPage}");
+        response.EnsureSuccessStatusCode();
+
+        var page = await response.Content.ReadFromJsonAsync<PageDto<AlbumDto>>();
+        return page!;
+    }
+
     public async Task DeleteAsync(Guid id)
     {
         var response = await _httpClient.DeleteAsync($"api/album/delete/{id}");

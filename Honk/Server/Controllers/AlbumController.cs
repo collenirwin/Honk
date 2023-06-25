@@ -1,10 +1,12 @@
 ﻿using EntityFramework.Exceptions.Common;
 using Honk.Server.Models.Data;
 using Honk.Server.Services;
+using Honk.Server.Utils;
 using Honk.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using ToPage;
 
 namespace Honk.Server.Controllers;
 
@@ -82,14 +84,18 @@ public class AlbumController : ControllerBase
             return NotFound();
         }
 
-        var dto = new AlbumDto(
-            album.Name,
-            album.Description,
-            album.Tags
-                .Select(tag => tag.TagText)
-                .ToList());
-
+        var dto = album.ToDto();
         return Ok(dto);
+    }
+
+    [HttpGet("get-own/{pageNumber}")]
+    public async Task<IActionResult> GetOwn(int pageNumber, [FromQuery] int itemsPerPage)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var page = await _albumService.GetPageForUserAsync(userId!, pageNumber, itemsPerPage);
+        var dtoPage = page.ToDto(page.Items.Select(album => album.ToDto()));
+
+        return Ok(dtoPage);
     }
 
     [HttpDelete("delete/{id:guid}")]

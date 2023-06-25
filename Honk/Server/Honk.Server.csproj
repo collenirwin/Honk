@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.4" />
+    <PackageReference Include="ToPage" Version="2.0.1" />
+    <PackageReference Include="ToPage.EFCore" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
