@@ -4,6 +4,7 @@
 
 @inject AlbumService AlbumService
 @inject NavigationManager Navigation
+@inject IDialogService DialogService
 
 <PageTitle>Album</PageTitle>
 
@@ -11,13 +12,32 @@
 
     <MudText Typo="Typo.h3" Class="mb-7">
         Album
-        <MudFab
+        
+        <MudButton
             Color="Color.Primary"
+            Variant="Variant.Outlined"
+            DisableElevation
             StartIcon="@Icons.Material.Filled.Save"
-            Style="float: right;"
-            Title="Save the album"
             ButtonType="ButtonType.Submit"
-            Disabled="@_loading" />
+            Style="float: right;"
+            Disabled="@_loading">
+            Save
+        </MudButton>
+
+        @if (Id is not null)
+        {
+            <MudButton
+                Color="Color.Error"
+                Variant="Variant.Text"
+                DisableElevation
+                StartIcon="@Icons.Material.Filled.Delete"
+                Style="float: right;"
+                Class="mr-2"
+                Disabled="@_loading"
+                OnClick="async () => await DeleteAsync()">
+                Delete
+            </MudButton>
+        }
     </MudText>
 
 
@@ -88,6 +108,21 @@
         finally
         {
             _loading = false;
+        }
+    }
+
+    private async Task DeleteAsync()
+    {
+        var parameters = new DialogParameters<ConfirmDialog>();
+        parameters.Add(d => d.Content, "Are you sure you want to delete this album and all photos within it?");
+
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirm", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await AlbumService.DeleteAsync(Id!.Value);
+            Navigation.NavigateTo("/albums");
         }
     }
 }

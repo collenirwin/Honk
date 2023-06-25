@@ -36,4 +36,10 @@ public class AlbumService
         var albumDto = await response.Content.ReadFromJsonAsync<AlbumDto>();
         return albumDto!;
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var response = await _httpClient.DeleteAsync($"api/album/delete/{id}");
+        await response.EnsureSuccessWithMessageAsync();
+    }
 }

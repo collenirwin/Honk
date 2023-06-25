@@ -38,4 +38,15 @@ public class AlbumService
             .Include(album => album.Tags)
             .FirstOrDefaultAsync();
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var album = await GetAsync(id);
+
+        if (album is not null)
+        {
+            _context.Albums.Remove(album);
+            await _context.SaveChangesAsync();
+        }
+    }
 }

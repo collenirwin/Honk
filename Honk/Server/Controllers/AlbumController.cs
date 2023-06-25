@@ -91,4 +91,19 @@ public class AlbumController : ControllerBase
 
         return Ok(dto);
     }
+
+    [HttpDelete("delete/{id:guid}")]
+    [Authorize]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        try
+        {
+            await _albumService.DeleteAsync(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
 }
