@@ -13,6 +13,9 @@
     <MudText Typo="Typo.h3" Class="mb-7">
         Album
         
+        <!-- prevents form submit on enter: https://stackoverflow.com/a/61304402/9338546 -->
+        <button type="submit" disabled style="display: none" aria-hidden="true"></button>
+
         <MudButton
             Color="Color.Primary"
             Variant="Variant.Outlined"
@@ -52,6 +55,9 @@
             @bind-Value="@_model.Description" For="(() => _model.Description)"
             Lines="3"
             OnlyValidateIfDirty="true" />
+
+        <TagField />
+        
     </LoadingContainer>
 
     @if (_errorMessage is not null)
