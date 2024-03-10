@@ -15,16 +15,29 @@ namespace Honk.Server.Controllers;
 public class AlbumController : ControllerBase
 {
     private readonly AlbumService _albumService;
+    private readonly TagService _tagService;
 
-    public AlbumController(AlbumService albumService)
+    public AlbumController(AlbumService albumService, TagService tagService)
     {
         _albumService = albumService;
+        _tagService = tagService;
     }
 
     [HttpPost("create")]
     [Authorize]
     public async Task<IActionResult> Create([FromBody] AlbumDto album)
     {
+        var tagInserts = new List<Task>();
+        foreach (var tagText in album.Tags)
+        {
+            var tag = new Tag
+            {
+                TagText = tagText,
+            };
+            tagInserts.Add(_tagService.CreateAsync(tag));
+        }
+        
+
         var albumModel = new Album
         {
             Name = album.Name,
@@ -35,6 +48,8 @@ public class AlbumController : ControllerBase
         try
         {
             await _albumService.CreateAsync(albumModel);
+            await Task.WhenAll(tagInserts);
+
             return Ok(new ValueDto<Guid>(albumModel.Id));
         }
         catch (UniqueConstraintException)
