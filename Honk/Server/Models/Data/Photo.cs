@@ -7,22 +7,26 @@ namespace Honk.Server.Models.Data;
 /// Represents an uploaded photo in an album.
 /// </summary>
 [Index(nameof(Path), nameof(AlbumId), IsUnique = true)]
+[Table("photos")]
 public class Photo : BasePrivacyRestrictable
 {
     /// <summary>
     /// File path to the photo.
     /// </summary>
+    [Column("path")]
     public string Path { get; set; } = null!;
 
     /// <summary>
     /// Optional description of the photo.
     /// </summary>
+    [Column("description")]
     public string? Description { get; set; }
 
     /// <summary>
     /// <see cref="Album.Id"/> of the album this photo is in.
     /// </summary>
     [ForeignKey(nameof(Album))]
+    [Column("album_id")]
     public Guid AlbumId { get; set; }
 
     /// <summary>
@@ -34,11 +38,13 @@ public class Photo : BasePrivacyRestrictable
     /// <see cref="ApplicationUser.Id"/> of the user who uploaded this photo.
     /// </summary>
     [ForeignKey(nameof(UploadedBy))]
+    [Column("uploaded_by_user_id")]
     public string UploadedByUserId { get; set; } = null!;
 
     /// <summary>
     /// The user who uploaded this photo.
     /// </summary>
+    [Column("uploaded_by")]
     public ApplicationUser? UploadedBy { get; set; }
 
     /// <summary>

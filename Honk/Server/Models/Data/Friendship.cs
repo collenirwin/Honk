@@ -7,12 +7,14 @@ namespace Honk.Server.Models.Data;
 /// Represents a pair of users who are friends.
 /// </summary>
 [Index(nameof(User1Id), nameof(User2Id), IsUnique = true)]
+[Table("friendships")]
 public class Friendship : BaseModel
 {
     /// <summary>
     /// <see cref="ApplicationUser.Id"/> of the first user.
     /// </summary>
     [ForeignKey(nameof(User1))]
+    [Column("user_1_id")]
     public string User1Id { get; set; } = null!;
 
     /// <summary>
@@ -24,6 +26,7 @@ public class Friendship : BaseModel
     /// <see cref="ApplicationUser.Id"/> of the second user.
     /// </summary>
     [ForeignKey(nameof(User2))]
+    [Column("user_2_id")]
     public string User2Id { get; set; } = null!;
 
     /// <summary>
