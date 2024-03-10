@@ -1,4 +1,5 @@
 ﻿using Honk.Shared.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Honk.Server.Models.Data;
 
@@ -8,18 +9,21 @@ namespace Honk.Server.Models.Data;
 public abstract class BasePrivacyRestrictable : BaseModel, IPrivacyRestrictable
 {
     /// <inheritdoc />
+    [Column("view_privacy")]
     public PrivacyLevel ViewPrivacy { get; set; }
 
     /// <inheritdoc />
     public ICollection<ApplicationUser> ViewUsers { get; set; } = null!;
 
     /// <inheritdoc />
+    [Column("modification_privacy")]
     public PrivacyLevel ModificationPrivacy { get; set; }
 
     /// <inheritdoc />
     public ICollection<ApplicationUser> ModificationUsers { get; set; } = null!;
 
     /// <inheritdoc />
+    [Column("deletion_privacy")]
     public PrivacyLevel DeletionPrivacy { get; set; }
 
     /// <inheritdoc />

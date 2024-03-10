@@ -10,12 +10,14 @@ public abstract class BaseNotification : BaseModel
     /// <summary>
     /// Has the user read the notification?
     /// </summary>
+    [Column("read")]
     public bool Read { get; set; }
 
     /// <summary>
     /// <see cref="ApplicationUser.Id"/> of the user who this notification is for.
     /// </summary>
     [ForeignKey(nameof(For))]
+    [Column("for_user_id")]
     public string ForUserId { get; set; } = null!;
 
     /// <summary>

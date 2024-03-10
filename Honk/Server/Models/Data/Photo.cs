@@ -44,7 +44,6 @@ public class Photo : BasePrivacyRestrictable
     /// <summary>
     /// The user who uploaded this photo.
     /// </summary>
-    [Column("uploaded_by")]
     public ApplicationUser? UploadedBy { get; set; }
 
     /// <summary>
