@@ -1,0 +1,35 @@
+﻿@page "/albums/album/{id:guid}"
+@attribute [Authorize]
+
+@inject AlbumService AlbumService
+
+<PageTitle>Album - @_model.Name</PageTitle>
+
+<MudText Typo="Typo.h3" Class="mb-7">
+    @_model.Name
+    <MudFab
+        Color="Color.Primary"
+        StartIcon="@Icons.Material.Filled.Edit"
+        Style="float: right;"
+        Title="Save the album"
+        Href="@_editUrl" />
+</MudText>
+
+<MudText Typo="Typo.body1" Class="text-muted">@_model.Description</MudText>
+
+@code {
+    private AlbumViewModel _model = new();
+
+    private string _editUrl => $"/albums/album-form/{Id}";
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var albumDto = await AlbumService.GetAsync(Id);
+        _model.Name = albumDto.Name;
+        _model.Description = albumDto.Description;
+        _model.Tags = albumDto.Tags;
+    }
+}

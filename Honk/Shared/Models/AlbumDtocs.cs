@@ -5,4 +5,8 @@
 /// </summary>
 /// <param name="Name">Name of the album.</param>
 /// <param name="Description">Description of the album.</param>
-public record AlbumDto(string Name, string? Description);
+/// <param name="Tags">Tags for the album.</param>
+public record AlbumDto(string Name, string? Description, List<string> Tags)
+{
+    public Guid Id { get; set; }
+};

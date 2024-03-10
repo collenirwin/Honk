@@ -1,0 +1,83 @@
+﻿@page "/albums"
+@attribute [Authorize]
+
+@inject AlbumService AlbumService
+@inject NavigationManager Navigation
+
+<PageTitle>Albums</PageTitle>
+
+<MudText Typo="Typo.h3" Class="mb-7">
+    Albums
+    <MudFab
+        Color="Color.Primary"
+        StartIcon="@Icons.Material.Filled.Add"
+        Style="float: right;"
+        Title="Add a new album"
+        Href="/albums/album-form" />
+</MudText>
+
+<LoadingContainer Loading="_loading" HtmlClassList="mb-7">
+    <MudGrid>
+        @foreach (var album in _page?.Items ?? Enumerable.Empty<AlbumDto>())
+        {
+            <MudItem xs="12" md="4">
+                <a Href="/albums/album/@album.Id">
+                    <MudCard> <!-- TODO: add link to Album page -->
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">@album.Name</MudText>
+                            <MudText Typo="Typo.caption" Class="text-muted">@album.Description</MudText>
+
+                            @if (album.Tags.Any())
+                            {
+                                <div class="mt-2">
+                                    @foreach (var tag in album.Tags)
+                                    {
+                                        <MudChip Icon="@Icons.Material.Filled.Tag"
+                                                 Size="Size.Small"
+                                                 Variant="Variant.Text"
+                                                 Color="Color.Secondary">
+                                            @tag
+                                        </MudChip>
+                                    }
+                                </div>
+                            }
+                        </MudCardContent>
+                    </MudCard>
+                </a>
+            </MudItem>
+        }
+    </MudGrid>
+</LoadingContainer>
+
+<div class="text-center">
+    <MudPagination
+        Color="Color.Primary"
+        BoundaryCount="1"
+        MiddleCount="5"
+        Count="_page?.PageCount ?? 1"
+        SelectedChanged="async pageNumber => await SetPageAsync(pageNumber)" />
+</div>
+
+@code {
+    private PageDto<AlbumDto>? _page;
+    private bool _loading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SetPageAsync(pageNumber: 1);
+    }
+
+    private async Task SetPageAsync(int pageNumber)
+    {
+        _loading = true;
+
+        try
+        {
+            _page = await AlbumService.GetOwnAsync(pageNumber);
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}

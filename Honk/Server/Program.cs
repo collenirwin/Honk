@@ -47,7 +47,7 @@ builder.Services
              builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
 builder.Services.AddScoped<AlbumService>();
-
+builder.Services.AddScoped<TagService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

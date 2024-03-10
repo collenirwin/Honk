@@ -1,0 +1,49 @@
+﻿<MudTextField Label="Tags"
+    @bind-Value="CurrentTag" For="(() => CurrentTag)"
+    Immediate
+    MaxLength="255"
+    @onkeypress="OnKeyPress"
+    
+    OnlyValidateIfDirty="true" />
+
+@foreach (var tag in Tags)
+{
+    <MudChip
+        Icon="@Icons.Material.Filled.Tag"
+        Size="Size.Small"
+        Variant="Variant.Text"
+        Color="Color.Secondary"
+        Class="mt-2"
+        OnClose="RemoveTag"
+        Text="@tag" />
+}
+
+<!--
+    prevents form submit on enter (if rendered before form's submit button)
+    see https://stackoverflow.com/a/61304402/9338546
+-->
+<button type="submit" disabled style="display: none" aria-hidden="true"></button>
+
+@code {
+    [Parameter]
+    public ISet<string> Tags { get; set; } = new HashSet<string>();
+
+    [Parameter]
+    public string CurrentTag { get; set; } = "";
+
+    private void OnKeyPress(KeyboardEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(CurrentTag) &&
+            (e.Code == "Enter" || e.Code == "NumpadEnter") &&
+            !Tags.Contains(CurrentTag))
+        {
+            Tags.Add(CurrentTag.ToLower());
+            CurrentTag = "";
+        }
+    }
+
+    private void RemoveTag(MudChip chip)
+    {
+        Tags.Remove(chip.Text);
+    }
+}
